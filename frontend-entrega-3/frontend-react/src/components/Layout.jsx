@@ -1,11 +1,10 @@
 import React from 'react';
-import NavBar from './NavBar';
+import '../App.css'
 
 const Layout = ({ children }) => {
   return (
     <>
-      <NavBar />
-      <main>{children}</main>
+        <main className='main w-full m-auto bg-gray-100'>{children}</main>
     </>
   );
 };
