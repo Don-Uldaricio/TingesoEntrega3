@@ -21,6 +21,10 @@ public class CarreraService {
         return carreraRepository.findById(id).orElse(null);
     }
 
+    public Carrera findByCodigo(Integer codigo) {
+        return carreraRepository.findByCodigo(codigo);
+    }
+
     public Carrera save(Carrera carrera) {
         return carreraRepository.save(carrera);
     }

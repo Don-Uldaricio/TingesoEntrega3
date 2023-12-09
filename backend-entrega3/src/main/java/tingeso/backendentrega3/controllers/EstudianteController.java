@@ -1,6 +1,7 @@
 package tingeso.backendentrega3.controllers;
 
 import tingeso.backendentrega3.entities.Estudiante;
+import tingeso.backendentrega3.entities.PlanEstudio;
 import tingeso.backendentrega3.services.EstudianteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/estudiantes")
 public class EstudianteController {
 
@@ -20,9 +22,23 @@ public class EstudianteController {
         return estudianteService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Estudiante getEstudianteById(@PathVariable Long id) {
-        return estudianteService.findById(id);
+    @GetMapping("/{rut}")
+    public ResponseEntity<Estudiante> getEstudianteByRut(@PathVariable("rut") String rut) {
+        Estudiante estudiante = estudianteService.findByRut(rut);
+        if(estudiante == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(estudiante);
+    }
+
+    @GetMapping("carrera/{codigo}")
+    public ResponseEntity<String> getCarrera(@PathVariable("codigo") Integer codigo) {
+        return ResponseEntity.ok(estudianteService.getNombreCarrera(codigo));
+    }
+
+    @GetMapping("/planes-estudio/{codigo}")
+    public ResponseEntity<List<PlanEstudio>> getPlanesEstudio(@PathVariable("codigo") Integer codigo) {
+        return ResponseEntity.ok(estudianteService.getPlanesEstudio(codigo));
     }
 
     @PostMapping

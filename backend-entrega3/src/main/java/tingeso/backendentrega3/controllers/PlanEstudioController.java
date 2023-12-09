@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/planes-estudio")
 public class PlanEstudioController {
 
@@ -16,8 +17,8 @@ public class PlanEstudioController {
     private PlanEstudioService planEstudioService;
 
     @GetMapping
-    public List<PlanEstudio> getAllPlanesEstudio() {
-        return planEstudioService.findAll();
+    public ResponseEntity<List<PlanEstudio>> getAllPlanesEstudio() {
+        return ResponseEntity.ok(planEstudioService.findAll());
     }
 
     @GetMapping("/{id}")

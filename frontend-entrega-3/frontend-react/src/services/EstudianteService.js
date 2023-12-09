@@ -5,17 +5,18 @@ class EstudianteService {
         return axios.get(`http://localhost:8080/estudiantes`)
     }
 
-    ingresarEstudiante(estudiante){
-        return axios.post(`http://localhost:8080/estudiantes/ingresar-estudiante`, estudiante);
+    getEstudiante(rut){
+        return axios.get(`http://localhost:8080/estudiantes/${rut}`);
     }
 
-    consultarPlanilla(rut){
-        return axios.post(`http://localhost:8080/estudiantes/consultar-planilla/${rut}`);
+    getCarrera(codigo_carrera){
+        return axios.get(`http://localhost:8080/estudiantes/carrera/${codigo_carrera}`);
     }
 
-    generarCuotas(rut){
-        return axios.get(`http://localhost:8080/estudiantes/generar-cuotas/${rut}`);
+    getAsignaturas(codigo_carrera) {
+        return axios.get(`http://localhost:8080/estudiantes/planes-estudio/${codigo_carrera}`);
     }
+
 }
 
 const estudianteService = new EstudianteService();

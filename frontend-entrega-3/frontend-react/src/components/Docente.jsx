@@ -1,13 +1,14 @@
 import React from 'react';
-import Layout from './Layout.jsx';
-import { useParams } from 'react-router-dom';
 import '../App.css'
+import BuscadorAsignaturas from './GestorAsignaturas.jsx';
 
 const Docente = () => {
 
     return (
-        <Layout>
-        </Layout>
+        <div className='main pt-5 flex flex-col bg-gray-100'>
+            <p className=' font-bold text-3xl text-usach-industrial-1000'>Gestor de Asignaturas</p>
+            <BuscadorAsignaturas />
+        </div>
     );
 };
 

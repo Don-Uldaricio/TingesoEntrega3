@@ -1,25 +1,35 @@
 import Layout from './Layout.jsx';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import estudianteService from '../services/EstudianteService.js';
 
 const Home = () => {
     const [modalEstudiante, setModalEstudiante] = useState(false);
-    const [rut, setRut] = useState(null);
+    const [rut, setRut] = useState('');
     const [error, setError] = useState(null);
+    let estudiante = useState(null);
 
     const navigate = useNavigate();
 
     const portalEstudiante = () => {
-        navigate(`/estudiante/${rut}`);
+        navigate(`/estudiantes`, {state: {estudiante}});
     }
 
-    const verificarRut = (event) => {
+    const verificarRut = async (event) => {
         event.preventDefault();
-        if (rut.trim()) {
-            portalEstudiante();
-        } else {
-          setError('Por favor, ingrese un RUT válido.');
-        }
+        try {
+            const response = await estudianteService.getEstudiante(rut);
+            console.log(response.data);
+            if (response.data != null) {
+                estudiante = response.data;
+                portalEstudiante();
+            } else {
+              setError('Por favor, ingrese un RUT válido.');
+            }
+          } catch (error) {
+            console.error("Hubo un error al enviar los datos del estudiante:", error);
+            setError(true);
+          }
       };
 
     return (
@@ -27,7 +37,7 @@ const Home = () => {
         {!modalEstudiante &&
         <div v-if="!modalEstudiante" className="flex justify-center items-center">
             <form className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 my-4">
-                <div className=' text-center mb-7 font-light text-xl'>Bienvenido a toma de ramos DIINF!</div>
+                <div className=' text-center mb-7 font-light text-xl'>Bienvenido al sistema de ramos DIINF!</div>
                 <div className=' text-center mb-7 font-light text-lg'>¿Cómo deseas ingresar?</div>
                 <div className="flex flex-row gap-5 items-center justify-between">
                 <button className=" bg-usach-ultra-800 hover:bg-usach-terra-700 transition text-center ease-in-out text-lg text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full" 
@@ -36,7 +46,7 @@ const Home = () => {
                     Estudiante
                 </button>
                 <a className=" bg-usach-ultra-800 hover:bg-usach-terra-700 transition text-center ease-in-out text-lg text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full" 
-                    href="/docente">
+                    href="/docentes">
                     Docente
                 </a>
                 </div>
@@ -67,7 +77,7 @@ const Home = () => {
                         </button>
                     </div>
                 </form>
-                {error && <p>Rut inválido. Ingrese otro.</p>}
+                {error && <p className=' bg-usach-rouge-800 text-white font-medium p-2 px-3 rounded-lg'>RUT inválido. Ingrese otro.</p>}
             </>
         ) : null}
         </Layout>
