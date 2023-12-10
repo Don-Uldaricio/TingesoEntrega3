@@ -1,6 +1,7 @@
 package tingeso.backendentrega3.controllers;
 
 import tingeso.backendentrega3.entities.Estudiante;
+import tingeso.backendentrega3.entities.Nota;
 import tingeso.backendentrega3.entities.PlanEstudio;
 import tingeso.backendentrega3.services.EstudianteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,11 @@ public class EstudianteController {
     @GetMapping("/planes-estudio/{codigo}")
     public ResponseEntity<List<PlanEstudio>> getPlanesEstudio(@PathVariable("codigo") Integer codigo) {
         return ResponseEntity.ok(estudianteService.getPlanesEstudio(codigo));
+    }
+
+    @GetMapping("/notas/{rut}")
+    public ResponseEntity<List<Nota>> getNotasEstudiante(@PathVariable("rut") String rut) {
+        return ResponseEntity.ok(estudianteService.getNotasEstudiante(rut));
     }
 
     @PostMapping

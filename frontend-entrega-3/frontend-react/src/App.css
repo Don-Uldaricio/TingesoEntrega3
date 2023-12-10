@@ -57,3 +57,7 @@
   display: flex;
   align-items: top;
 }
+
+.ramos {
+  max-height: calc(100vh - 72px);
+}

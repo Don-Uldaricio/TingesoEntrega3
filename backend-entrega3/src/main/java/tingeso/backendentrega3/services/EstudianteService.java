@@ -1,6 +1,7 @@
 package tingeso.backendentrega3.services;
 
 import tingeso.backendentrega3.entities.Estudiante;
+import tingeso.backendentrega3.entities.Nota;
 import tingeso.backendentrega3.entities.PlanEstudio;
 import tingeso.backendentrega3.repositories.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class EstudianteService {
 
     @Autowired
     private CarreraService carreraService;
+
+    @Autowired
+    private NotaService notaService;
 
     @Autowired
     private PlanEstudioService planEstudioService;
@@ -55,5 +59,16 @@ public class EstudianteService {
             }
         }
         return ramosCarrera;
+    }
+
+    public List<Nota> getNotasEstudiante(String rut) {
+        List<Nota> notas = notaService.findAll();
+        List<Nota> notasEstudiante = new ArrayList<>();
+        for (Nota n: notas) {
+            if (Objects.equals(n.getCod_alumno(), rut)) {
+                notasEstudiante.add(n);
+            }
+        }
+        return notasEstudiante;
     }
 }

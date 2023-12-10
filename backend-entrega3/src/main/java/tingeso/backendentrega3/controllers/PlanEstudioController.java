@@ -1,5 +1,6 @@
 package tingeso.backendentrega3.controllers;
 
+import tingeso.backendentrega3.entities.BloqueAsignatura;
 import tingeso.backendentrega3.entities.PlanEstudio;
 import tingeso.backendentrega3.services.PlanEstudioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ public class PlanEstudioController {
     @GetMapping("/{id}")
     public PlanEstudio getPlanEstudioById(@PathVariable Long id) {
         return planEstudioService.findById(id);
+    }
+
+    @GetMapping("/bloques-horario/{codigo}")
+    public ResponseEntity<List<BloqueAsignatura>> getBloquesHorario(@PathVariable("codigo") Integer codigo) {
+        return ResponseEntity.ok(planEstudioService.getBloquesHorario(codigo));
     }
 
     @PostMapping

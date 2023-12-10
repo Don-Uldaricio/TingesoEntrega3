@@ -1,5 +1,6 @@
 package tingeso.backendentrega3.services;
 
+import tingeso.backendentrega3.entities.BloqueAsignatura;
 import tingeso.backendentrega3.entities.PlanEstudio;
 import tingeso.backendentrega3.repositories.PlanEstudioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ public class PlanEstudioService {
 
     @Autowired
     private PlanEstudioRepository planEstudioRepository;
+
+    @Autowired
+    private BloqueAsignaturaService bloqueAsignaturaService;
 
     public List<PlanEstudio> findAll() {
         return planEstudioRepository.findAll();
@@ -29,6 +33,9 @@ public class PlanEstudioService {
         planEstudioRepository.deleteById(id);
     }
 
-    // Puedes agregar más métodos según las necesidades del negocio
+    public List<BloqueAsignatura> getBloquesHorario(Integer codigo) {
+        return bloqueAsignaturaService.findByCodAsig(codigo);
+    }
+
 }
 

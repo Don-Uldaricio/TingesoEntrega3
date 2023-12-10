@@ -17,6 +17,10 @@ class EstudianteService {
         return axios.get(`http://localhost:8080/estudiantes/planes-estudio/${codigo_carrera}`);
     }
 
+    getNotas(rut) {
+        return axios.get(`http://localhost:8080/estudiantes/notas/${rut}`);
+    }
+
 }
 
 const estudianteService = new EstudianteService();

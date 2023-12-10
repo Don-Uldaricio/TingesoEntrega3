@@ -18,7 +18,7 @@ const DashboardEstudiante = ({ onButtonSelect }) => {
         className='flex flex-row gap-1 items-center text-left hover:bg-usach-ultra-600 transition rounded-lg pl-2 py-1' >
           <img width="22" height="22" src="https://img.icons8.com/ios-glyphs/22/todo-list--v1.png" alt="todo-list--v1" className='invert'/>Malla Curricular</button>
         <button 
-        onClick={() => onButtonSelect('Ramos')} 
+        onClick={() => onButtonSelect('Tomar Ramos')} 
         className='flex flex-row gap-1 items-center text-left hover:bg-usach-ultra-600 transition rounded-lg pl-2 py-1' >
           <img src="https://img.icons8.com/ios-glyphs/22/plus--v1.png" className='invert' alt="plus--v1"/>Tomar Ramos</button>
       </nav>

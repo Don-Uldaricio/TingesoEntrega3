@@ -37,7 +37,7 @@ const Home = () => {
         {!modalEstudiante &&
         <div v-if="!modalEstudiante" className="flex justify-center items-center">
             <form className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 my-4">
-                <div className=' text-center mb-7 font-light text-xl'>Bienvenido al sistema de ramos DIINF!</div>
+                <div className=' text-center mx-4 mb-7 font-light text-xl'>Bienvenido a la Intranet DIINF</div>
                 <div className=' text-center mb-7 font-light text-lg'>¿Cómo deseas ingresar?</div>
                 <div className="flex flex-row gap-5 items-center justify-between">
                 <button className=" bg-usach-ultra-800 hover:bg-usach-terra-700 transition text-center ease-in-out text-lg text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full" 
