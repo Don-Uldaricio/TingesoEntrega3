@@ -3,13 +3,15 @@ package tingeso.backendentrega3.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tingeso.backendentrega3.entities.BloqueAsignatura;
 import tingeso.backendentrega3.entities.BloqueEstudiante;
 import tingeso.backendentrega3.services.BloqueEstudianteService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/bloque-estudiante")
+@CrossOrigin
+@RequestMapping("/bloques-estudiante")
 public class BloqueEstudianteController {
 
     @Autowired
@@ -30,6 +32,16 @@ public class BloqueEstudianteController {
     @PostMapping
     public BloqueEstudiante create(@RequestBody BloqueEstudiante bloqueEstudiante) {
         return bloqueEstudianteService.save(bloqueEstudiante);
+    }
+
+    @GetMapping("/horario/{rut}")
+    public ResponseEntity<List<BloqueEstudiante>> getHorarioEstudiante(@PathVariable("rut") String rut) {
+        return ResponseEntity.ok(bloqueEstudianteService.getHorarioEstudiante(rut));
+    }
+
+    @PostMapping("/inscribir-ramos/{rut}")
+    public ResponseEntity<List<BloqueEstudiante>> inscribirRamos(@RequestBody List<BloqueAsignatura> bloques, @PathVariable("rut") String rut) {
+        return ResponseEntity.ok(bloqueEstudianteService.inscribirAsignaturas(bloques, rut));
     }
 
     @PutMapping("/{id}")

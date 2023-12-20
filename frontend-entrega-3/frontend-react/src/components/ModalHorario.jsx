@@ -93,8 +93,8 @@ const enviarHorarios = async () => {
         </tbody>
       </table>
       <div className='flex justify-end mt-4'>
-        <button onClick={enviarHorarios} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2'>Guardar</button>
-        <button onClick={cerrarModal} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>Cerrar</button>
+        <button onClick={cerrarModal} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition'>Cerrar</button>
+        <button onClick={enviarHorarios} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-3 transition'>Guardar</button>
       </div>
     </div>}
       {modalExito && 

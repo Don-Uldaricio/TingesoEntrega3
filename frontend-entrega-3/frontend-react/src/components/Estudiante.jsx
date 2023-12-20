@@ -6,6 +6,7 @@ import DashboardEstudiante from './DashboardEstudiante.jsx';
 import MallaCurricular from './MallaCurricular.jsx';
 import PerfilEstudiante from './PerfilEstudiante.jsx';
 import TomarRamos from './TomarAsignaturas.jsx';
+import HorarioEstudiante from './HorarioEstudiante.jsx';
 import axios from 'axios';
 
 const Estudiante = () => {
@@ -32,6 +33,7 @@ const Estudiante = () => {
     };
 
     useEffect(() => {
+        localStorage.clear();
         const fetchDatosEstudiante = async () => {
             try {
                 // Obtenemos datos estudiante
@@ -41,11 +43,34 @@ const Estudiante = () => {
 
                 const responseAsignaturas = await estudianteService.getAsignaturas(estudiante.cod_carr);
                 setAsignaturas(responseAsignaturas.data);
-                console.log(responseAsignaturas.data);
+                console.log("response asignaturas",responseAsignaturas.data);
 
                 const responseNotas = await estudianteService.getNotas(estudiante.rut);
                 console.log(responseNotas.data);
                 setAsignaturasCursadas(responseNotas.data);
+
+                const responseHorarioEstudiante = await axios.get(`http://localhost:8080/bloques-estudiante/horario/${estudiante.rut}`);
+                console.log("horario estudiante",responseHorarioEstudiante.data.length);
+                if (responseHorarioEstudiante.data.length !== 0) {
+                    localStorage.setItem('horarioEstudiante', JSON.stringify(responseHorarioEstudiante.data));
+                    localStorage.setItem('ramosInscritos', true);
+                    // Crear una lista de códigos únicos
+                    const codigosUnicos = new Set(responseHorarioEstudiante.data.map(item => item.cod_asig));
+                    console.log(codigosUnicos);
+                    const listaFiltrada = responseAsignaturas.data.filter(asignatura => 
+                        codigosUnicos.has(asignatura.cod_asig));
+                    console.log("lista filtrada", listaFiltrada);
+
+                    // Crear la lista datosAsignatura
+                    const datosAsignatura = Array.from(listaFiltrada).map(item => {
+                    return {
+                        cod_asig: item.cod_asig,
+                        nom_asig: item.nom_asig,
+                        color_asig: generarColorAleatorio()
+                    };
+                    });
+                    localStorage.setItem('asignaturasHorario', JSON.stringify(datosAsignatura));
+                }
 
             } catch (error) {
                 console.error("Hubo un error al obtener los datos del estudiante:", error);
@@ -101,6 +126,19 @@ const Estudiante = () => {
         }
     }, [asignaturas, asignaturasCursadas, datosEstudianteCargados]);    
 
+    const generarColorAleatorio = () => {
+        // Genera un número aleatorio entre 100 y 255 para cada componente de color
+        const generarComponenteClaro = () => Math.floor(Math.random() * 156) + 100;
+    
+        const rojo = generarComponenteClaro();
+        const verde = generarComponenteClaro();
+        const azul = generarComponenteClaro();
+    
+        // Convierte cada componente a un valor hexadecimal y los une para formar el color
+        const color = `#${rojo.toString(16)}${verde.toString(16)}${azul.toString(16)}`;
+        return color;
+    };
+
     // Guardamos los datos obtenidos en el localStorage
     localStorage.setItem('estudiante', JSON.stringify(estudiante));
     localStorage.setItem('asignaturas', JSON.stringify(asignaturas));
@@ -123,16 +161,27 @@ const Estudiante = () => {
             <>
                 <DashboardEstudiante onButtonSelect={handleButtonSelect}/>
                 {!modalHorario && !modalPerfil && !modalMalla && !modalRamos &&
-            <p className='flex-1 text-center font-light text-3xl text-usach-industrial-1000'>Bienvenido/a {estudiante.nombres}!</p>}
+            <div className='flex-1 flex-col items-center text-center'>
+                <p className='w-full flex-1 text-center font-light mb-3 text-3xl text-usach-industrial-1000'>Bienvenido/a {estudiante.nombres}!</p>
+                <p className='w-full flex-1 text-center font-light text-xl text-usach-industrial-1000'>Para comenzar elige una opción del menú a la izquierda</p>
+                </div>}
             {modalPerfil && <div className='flex-1 items-center justify-center'><PerfilEstudiante/></div>}
 
             {modalHorario &&
-            <div className=''>Horario</div>}
+            <div className='flex-1 flex-row items-center justify-center'><HorarioEstudiante/></div>}
 
-            {modalMalla && <div className='flex-1 items-center justify-center'><MallaCurricular/></div>}
+            {modalMalla && 
+            <div className='flex-1 flex-col items-center justify-center'>
+                <MallaCurricular/>
+                <div className='mx-9 mt-5 flex flex-row gap-10 font-light'>
+                    <div className='flex flex-row items-center gap-3'><div className='h-5 w-5 bg-usach-aqua-700'></div>Asignaturas aprobadas</div>
+                    <div className='flex flex-row items-center gap-3'><div className='h-5 w-5 bg-usach-rouge-700'></div>Asignaturas reprobadas</div>
+                    <div className='flex flex-row items-center gap-3'><div className='h-5 w-5 bg-usach-daisy-700'></div>Asignaturas inscritas</div>
+                </div>
+            </div>}
 
             {modalRamos && 
-            <div className='ramos flex-1 flex-row overflow-y-scroll items-center justify-center'>
+            <div className='ramos flex-1 flex-row overflow-y-hidden items-center justify-center'>
                 <TomarRamos/>
             </div>}
             </>

@@ -7,6 +7,7 @@ const GestorAsignaturas = () => {
   const [busqueda, setBusqueda] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [asignaturaSeleccionada, setAsignaturaSeleccionada] = useState(null);
+  const [bloquesAsignaturas, setBloquesAsignaturas] = useState([]);
 
   useEffect(() => {
     const fetchAsignaturas = async () => {
@@ -17,13 +18,16 @@ const GestorAsignaturas = () => {
           nombre: asig.nom_asig,
           cod_plan: asig.cod_plan // Añadir cod_plan aquí
         })));
+        const responseBloques = await axios.get('http://localhost:8080/bloques-asignatura');
+        setBloquesAsignaturas(responseBloques.data);
+
       } catch (error) {
         console.error('Error al obtener las asignaturas:', error);
       }
     };
   
     fetchAsignaturas();
-  }, []);  
+  }, [bloquesAsignaturas]);  
 
   const handleInputChange = (event) => {
     setBusqueda(event.target.value);
@@ -38,6 +42,10 @@ const GestorAsignaturas = () => {
 
   const guardarHorario = (horario) => {
     setModalVisible(false);
+  };
+
+  const tieneHorario = (idAsignatura) => {
+    return bloquesAsignaturas.some(bloque => bloque.cod_asig === idAsignatura);
   };
 
   const asignaturasFiltradas = busqueda.length === 0
@@ -65,12 +73,18 @@ const GestorAsignaturas = () => {
           <li key={asignatura.id} className='flex justify-between items-center border-b border-gray-200 p-2'>
             <span className='font-normal w-[30%]'>{asignatura.nombre}</span>
             <span className='font-normal'>{asignatura.cod_plan}</span>
-            <button 
-              onClick={() => abrirModalHorario(asignatura)}
-              className='bg-usach-ultra-700 transition hover:bg-usach-terra-700 text-white font-normal py-2 px-4 rounded-lg'
-            >
-              Agregar Horario
-            </button>
+            {tieneHorario(asignatura.id) ? (
+          <span className='bg-green-400 text-white font-normal py-2 px-4 rounded-lg'>
+            Horario ingresado
+          </span>
+        ) : (
+          <button 
+            onClick={() => abrirModalHorario(asignatura)}
+            className='ml-4 bg-usach-ultra-700 transition hover:bg-usach-terra-700 text-white font-normal py-2 px-4 rounded-lg'
+          >
+            Agregar Horario
+          </button>
+        )}
           </li>
         ))}
       </ul>

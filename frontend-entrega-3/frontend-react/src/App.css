@@ -61,3 +61,11 @@
 .ramos {
   max-height: calc(100vh - 72px);
 }
+
+.horario-interactivo {
+  max-height: calc(100vh - 72px);
+}
+
+.tomar-ramos {
+  min-height: calc(100vh - 72px);
+}
